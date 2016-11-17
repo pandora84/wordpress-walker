@@ -7,4 +7,5 @@
 >	"menu_class" => "menu-list",  
 >	"menu_id" => "main-menu",  
 >	"walker" => new walker_bem_menu('menu'), // наш волкер который переделывает меню 
+>
 >)); 
