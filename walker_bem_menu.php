@@ -7,10 +7,11 @@ class walker_bem_menu extends Walker_Nav_Menu {
         // Define menu item names appropriately
         $this->item_css_class_suffixes = array(
             'item'                      => '__item',  
-            'parent_item'               => '__dropdown-item', 
+            'sub_item'                  => '__dropdown-item', 
+            'parent_item'               => '__item--parent', 
             'active_item'               => '__item--active',
-            'parent_of_active_item'     => '__item--parent--active',
-            'ancestor_of_active_item'   => '__item--ancestor--active',
+            'parent_of_active_item'     => '__item--parent-active',
+            'ancestor_of_active_item'   => '__item--ancestor-active',
             'sub_menu'                  => '__dropdown', 
             'link'                      => '__link',
             'sub_link'                  => '__dropdown-link'
@@ -55,17 +56,15 @@ class walker_bem_menu extends Walker_Nav_Menu {
         $suffix = $this->item_css_class_suffixes;
         // Item classes
         $item_classes =  array(
-            'item_class'            => $depth == 0 ? $prefix . $suffix['item'] : '',
-            'active_page_class'     => in_array("current-menu-item",$item->classes) ? $prefix . $suffix['active_item'] : '',
+            'item_class'            => in_array("current-menu-item",$item->classes) ? $prefix . $suffix['active_item'] : ($depth == 0 ? $prefix . $suffix['item'] : $prefix . $suffix['sub_item']),
+            'parent_class'          => $args->has_children ? $parent_class = $prefix . $suffix['parent_item'] : '',
+//            'active_page_class'     => in_array("current-menu-item",$item->classes) ? $prefix . $suffix['active_item'] : '',
             'active_parent_class'   => in_array("current-menu-parent",$item->classes) ? $prefix . $suffix['parent_of_active_item'] : '',
             'active_ancestor_class' => in_array("current-menu-ancestor",$item->classes) ? $prefix . $suffix['ancestor_of_active_item'] : '',
             'user_class'            => $item->classes[0] !== '' ? $prefix . '__item--'. $item->classes[0] : ''
         );
         // convert array to string excluding any empty values
         $class_string = implode("  ", array_filter($item_classes));
-        if(!trim($class_string)) {
-            $class_string = $prefix . $suffix['parent_item'];
-        }
         // Add the classes to the wrapping <li>
         $output .= $indent . '<li class="' . $class_string . '">';
         // Link classes
