@@ -10,6 +10,7 @@ class walker_bem_menu extends Walker_Nav_Menu {
             'sub_item'                  => '__dropdown-item', 
             'parent_item'               => '__item--parent', 
             'active_item'               => '__item--active',
+            'active_sub_item'           => '__dropdown-item--active',
             'parent_of_active_item'     => '__item--parent-active',
             'ancestor_of_active_item'   => '__item--ancestor-active',
             'sub_menu'                  => '__dropdown', 
@@ -56,9 +57,9 @@ class walker_bem_menu extends Walker_Nav_Menu {
         $suffix = $this->item_css_class_suffixes;
         // Item classes
         $item_classes =  array(
-            'item_class'            => in_array("current-menu-item",$item->classes) ? $prefix . $suffix['active_item'] : ($depth == 0 ? $prefix . $suffix['item'] : $prefix . $suffix['sub_item']),
+            'item_class'            => $depth == 0 ? $prefix . $suffix['item'] : $prefix . $suffix['sub_item'],
             'parent_class'          => $args->has_children ? $parent_class = $prefix . $suffix['parent_item'] : '',
-//            'active_page_class'     => in_array("current-menu-item",$item->classes) ? $prefix . $suffix['active_item'] : '',
+            'active_page_class'     => in_array("current-menu-item",$item->classes) ? ($depth == 0 ? $prefix . $suffix['active_item'] : $prefix . $suffix['active_sub_item']) : '',
             'active_parent_class'   => in_array("current-menu-parent",$item->classes) ? $prefix . $suffix['parent_of_active_item'] : '',
             'active_ancestor_class' => in_array("current-menu-ancestor",$item->classes) ? $prefix . $suffix['ancestor_of_active_item'] : '',
             'user_class'            => $item->classes[0] !== '' ? $prefix . '__item--'. $item->classes[0] : ''
